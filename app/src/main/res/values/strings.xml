@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MangleText</string>
+    <string name="qotd_attr">Quote of the Day from They Said So</string>
+    <string name="sample_text">Sample Text</string>
+    <string name="enter_string">Enter Your Own Text</string>
+    <string name="take_me_btn">Take me to the translations!</string>
+    <string name="enter_your_own">Enter Your Own Text</string>
+</resources>
