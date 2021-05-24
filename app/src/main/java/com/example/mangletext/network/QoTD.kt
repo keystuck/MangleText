@@ -24,13 +24,13 @@ data class QoTD(
     val length: Int = 0,
     val author: String = "",
     val tags: Array<String> = arrayOf(""),
-    val category: String,
-    val language: String,
-    val date: String,
-    val permalink: String,
+    val category: String = "",
+    val language: String = "",
+    val date: String = "",
+    val permalink: String = "",
     val id: String = "",
     val background: String = "",
-    val title: String
+    val title: String = ""
 ) : Parcelable {
 
 }

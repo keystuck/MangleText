@@ -1,62 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools">-->
-<!--    <data>-->
-<!--        <variable-->
-<!--            name="viewModel"-->
-<!--            type="com.example.mangletext.QuoteSelectionViewModel" />-->
-<!--    </data>-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.mangletext.QuoteSelectionViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/tv_qotd_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/qotd_attr"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        android:layout_width="match_parent"
+        android:padding="32dp">
 
         <TextView
-            android:id="@+id/tv_qotd_text"
+            android:id="@+id/tv_qotd_label"
+            android:textSize="@dimen/text_size_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="testestest"
+            android:text="@string/qotd_attr"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_qotd_label" />
+            />
+        <TextView
+            android:id="@+id/tv_qotd_label2"
+            android:textSize="@dimen/text_size_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/they_said_so"
+            app:layout_constraintTop_toBottomOf="@id/tv_qotd_label"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+        <LinearLayout
+            android:id="@+id/network_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_qotd_label2"
+            app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:id="@+id/tv_author_label2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/author_label"
+                android:textSize="@dimen/text_size_medium"
+                />
+
+
+            <TextView
+                android:id="@+id/tv_qotd_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="200dp"
+                android:background="@color/teal_200"
+                android:text="@{viewModel.quotation.quote}"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/author_name"
+                android:text="@{viewModel.quotation.author}"
+                android:textSize="@dimen/text_size_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/cached_data"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="visible"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tv_qotd_label2"-->
+<!--            app:layout_constraintStart_toStartOf="parent" >-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_cached_text"-->
+<!--                android:background="@color/purple_200"-->
+<!--                android:gravity="center_horizontal|center_vertical"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:minHeight="200dp"-->
+<!--                tools:text="testing quote"-->
+<!--                android:textSize="@dimen/text_size_medium"-->
+<!--                android:visibility="visible"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+<!--            <TextView-->
+<!--                android:id="@+id/tv_author_label"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/author_label"-->
+<!--                android:textSize="@dimen/text_size_medium"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:id="@+id/cached_author"-->
+<!--                tools:text="Testing Author"-->
+<!--                android:gravity="end"-->
+<!--                android:textSize="@dimen/text_size_medium"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--            />-->
+<!--        </LinearLayout>-->
 
         <TextView
             android:id="@+id/tv_your_own_label"
+            android:textSize="@dimen/text_size_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enter_your_own"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_qotd_text" />
+            app:layout_constraintBottom_toTopOf="@id/tv_your_own_text" />
 
-            <EditText
-                android:id="@+id/tv_your_own_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_your_own_label"
-                app:layout_constraintStart_toStartOf="parent" />
+        <EditText
+            android:id="@+id/tv_your_own_text"
+            android:textSize="@dimen/text_size_medium"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintBottom_toTopOf="@id/btn_take_me"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btn_take_me"
+            android:textSize="@dimen/text_size_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_your_own_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:text="@string/take_me_btn" />
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-<!--</layout>-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

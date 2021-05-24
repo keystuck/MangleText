@@ -1,37 +1,134 @@
 package com.example.mangletext
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Context
+import android.content.SharedPreferences
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.mangletext.databinding.QuoteSelectionFragmentBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class QuoteSelectionFragment : Fragment() {
 
-    private val viewModel: QuoteSelectionViewModel by lazy {
-        ViewModelProvider(this).get(QuoteSelectionViewModel::class.java)
-    }
+    private lateinit var binding: QuoteSelectionFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.quotation.observe(viewLifecycleOwner, Observer { it->
-            if (it != null){
-                var qotdView = view?.findViewById<TextView>(R.id.tv_qotd_text)
-                qotdView?.text = it.quote
-                Log.i("QuoteSelectionFragment", "got new quote...?")
+        binding = QuoteSelectionFragmentBinding.inflate(inflater)
+
+        var prefs = activity?.getSharedPreferences(
+            getString(R.string.pref_file), Context.MODE_PRIVATE
+        )
+
+        //get the current date to check against the cached value
+        val pattern = "yyyy-MM-dd"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+
+        //real date
+//        val date: String = simpleDateFormat.format(Date())
+
+        //test date to force mismatch
+        val date = "2020-03-01"
+
+        var use_cached = false
+        var quotation = ""
+        var author = ""
+
+        if (prefs!!.contains(getString(R.string.cached_date))){
+
+                val cached_date = prefs.getString(getString(R.string.cached_date), "0")
+            Log.i("QuoteSelectionFragment", "retrieved date $date compared to $cached_date")
+
+            //if the cached date is the current (or test) date, retrieve cached data
+                if (date.equals(cached_date) &&
+                        prefs.contains(getString(R.string.cached_quote))){
+                            use_cached = true
+                        Log.i("QuoteSelectionFragment","everything good so no viewmodel???")
+                    quotation = prefs.getString(getString(R.string.cached_quote), "quote missing") ?: ""
+                    author = prefs.getString(getString(R.string.cached_author), "author missing") ?: ""
+                    Log.i("QuoteSelectionFragment", "get cached quote $quotation")
+
+                    if (prefs.contains("lastAccessed")){
+                        Log.i("QuoteSelectionFragment",
+                        prefs.getString("lastAccessed", "no value").toString())
+                    }
+
+                }
+        }
+        if (!use_cached) {
+            cacheNewData(quotation, author, prefs, date)
+        }
+        binding.lifecycleOwner = this
+
+            val viewModelFactory = QuoteSelectionViewModelFactory(
+                quotation,
+                author,
+                requireNotNull(activity).application
+            )
+            binding.viewModel =
+                ViewModelProvider(this, viewModelFactory).get(QuoteSelectionViewModel::class.java)
+
+        binding.btnTakeMe.setOnClickListener(View.OnClickListener {
+            if (binding.tvYourOwnText.text.isEmpty()){
+                Log.i("QuoteSelectionFragment", "empty so translate my friend here")
             }
+            else {
+                quotation = binding.tvYourOwnText.text.toString()
+                author = "You"
+                Log.i("QuoteSelectionFrahgment", "I want to use my words")
+
+            }
+            val action = QuoteSelectionFragmentDirections.actionQuoteSelectionFragmentToManglingFragment(quotation, author)
+            this.findNavController().navigate(action)
+
         })
 
-        return inflater.inflate(R.layout.quote_selection_fragment, container, false)
 
+        return binding.root
     }
 
+    private fun cacheNewData(quote: String, author: String, prefs: SharedPreferences, date: String) {
+
+        var timeStored = System.currentTimeMillis()
+
+        Log.i("QuoteSelectionFragment", "get new quote")
+        with(prefs.edit()) {
+            putString(
+                getString(R.string.cached_quote),
+                quote
+            )
+            putString(
+                getString(R.string.cached_author),
+                author
+            )
+            putString(
+                getString(R.string.cached_date),
+                date
+            )
+            putString(
+                "lastAccessed",
+                timeStored.toString()
+            )
+            Log.i("QuoteSelectionFragment", "storing date $date")
+            Log.i("QuoteSelectionFragment", "storing at ${timeStored.toString()}")
+            apply()
+        }
+//        viewModel.quotation.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+//            binding.tvQotdText.text = it?.quote
+//            binding.authorName.text = it?.author
+//            Log.i("QuoteSelectionFragment", "value changed")
+//        })
+    }
 
 }

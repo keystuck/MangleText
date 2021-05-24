@@ -1,19 +1,18 @@
 package com.example.mangletext
 
-import android.util.Log
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.mangletext.network.QoTD
-import com.example.mangletext.network.QuoteApi
-import com.example.mangletext.network.QuoteApiService
-import kotlinx.coroutines.launch
-import java.lang.Exception
 
 enum class QoTDStatus {LOADING, ERROR, DONE}
 
-class QuoteSelectionViewModel : ViewModel() {
+class QuoteSelectionViewModel(inputQuote: String?, author: String?, app: Application) : AndroidViewModel(app) {
+
+    private var testQoTD = QoTD("ohthis", 9, "somebody somewhere", arrayOf("hello"), "category", "en", "1-1-01", "302423", "323492", "background", "title")
+
     private val _status = MutableLiveData<QoTDStatus>()
 
     val status: LiveData<QoTDStatus>
@@ -24,25 +23,37 @@ class QuoteSelectionViewModel : ViewModel() {
     val quotation: LiveData<QoTD?>
         get() = _quotation
 
+
     init{
-        getQuoteOfTheDay()
+        getQuoteOfTheDay(inputQuote, author)
     }
 
-    private fun getQuoteOfTheDay(){
-        viewModelScope.launch{
-            _status.value = QoTDStatus.LOADING
-            try{
-                var quote = QuoteApi.retrofitService.getQuote().contents.quotes[0]
-                _quotation.value = quote
-                _status.value = QoTDStatus.DONE
-                Log.i("QuoteSelectionViewModel", "done: ${quote.quote}")
+    private fun getQuoteOfTheDay(inputString:String?, author: String?) {
 
-            } catch (e: Exception){
-                _status.value = QoTDStatus.ERROR
-                _quotation.value = null
-                Log.i("QuoteSelectionViewModel", "error")
-            }
+        if ( inputString != null && author != null &&
+            !inputString.isEmpty()) {
+            _quotation.value = QoTD(inputString, inputString.length, author)
+        } else {
+            _quotation.value = testQoTD
+//        viewModelScope.launch{
+//            _status.value = QoTDStatus.LOADING
+//            try{
+//                var qoTD = QuoteApi.retrofitService.getQuote().contents.quotes[0]
+//                _quotation.value = qoTD
+//                _status.value = QoTDStatus.DONE
+//                Log.i("QuoteSelectionViewModel", "done: ${qoTD.quote}")
+//
+//            } catch (e: Exception){
+//                _status.value = QoTDStatus.ERROR
+//                _quotation.value = null
+//                Log.i("QuoteSelectionViewModel", "error")
+//            }
+//        }
         }
     }
 
+    fun replaceQuote(text: String){
+        _quotation.value = QoTD(text, text.length, "You")
+    }
 }
+

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.mangletext.mangling.ManglingViewModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".mangling.ManglingFragment">
+
+    <TextView
+        android:id="@+id/tv_orig_text_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
+        android:text="@string/orig_text_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_orig_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="200dp"
+        android:text="@{viewModel.quotation}"
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_orig_text_label"
+        tools:text="@string/orig_text_label" />
+    <TextView
+        android:id="@+id/tv_author_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/author_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_orig_text"
+        android:textSize="@dimen/text_size_medium" />
+    <TextView
+        android:id="@+id/tv_author_orig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity = "end"
+        android:textSize="@dimen/text_size_medium"
+        tools:text="@string/author_label"
+        android:text="@{viewModel.author}"
+        app:layout_constraintTop_toBottomOf="@id/tv_author_label"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_translate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/translate_btn"
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_author_orig" />
+
+    <TextView
+        android:id="@+id/translate_label_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/translated_through_czech"
+        app:layout_constraintTop_toBottomOf="@id/btn_translate"
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/translated_text_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/translate_label_1"
+        android:textSize="@dimen/text_size_medium"
+        tools:text="@string/translated_through_czech"
+        android:gravity="center" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

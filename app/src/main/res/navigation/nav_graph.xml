@@ -13,5 +13,21 @@
     <fragment
         android:id="@+id/quoteSelectionFragment"
         android:name="com.example.mangletext.QuoteSelectionFragment"
-        android:label="QuoteSelectionFragment" />
+        android:label="QuoteSelectionFragment" >
+        <action
+            android:id="@+id/action_quoteSelectionFragment_to_manglingFragment"
+            app:destination="@id/manglingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/manglingFragment"
+        android:name="com.example.mangletext.mangling.ManglingFragment"
+        android:label="mangling_fragment"
+        tools:layout="@layout/mangling_fragment" >
+        <argument
+            android:name="text"
+            app:argType="string" />
+        <argument
+            android:name="author"
+            app:argType="string" />
+    </fragment>
 </navigation>

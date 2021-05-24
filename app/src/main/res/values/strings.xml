@@ -1,8 +1,21 @@
 <resources>
     <string name="app_name">MangleText</string>
-    <string name="qotd_attr">Quote of the Day from They Said So</string>
+    <string name="qotd_attr">Quote of the Day from</string>
+    <string name="they_said_so">They Said So</string>
     <string name="sample_text">Sample Text</string>
-    <string name="enter_string">Enter Your Own Text</string>
     <string name="take_me_btn">Take me to the translations!</string>
-    <string name="enter_your_own">Enter Your Own Text</string>
+    <string name="enter_your_own">Or…Enter Your Own Text</string>
+    <string name="author_label">By (or attributed to)</string>
+    <string name="orig_text_label">Original Text</string>
+    <string name="lang_trans">Language pathway used</string>
+    <string name="trans_text">Translated text</string>
+    <string name="translate_btn">Translate me</string>
+    <string name="translated_through_czech">Translated into Czech and back into English becomes</string>
+
+    <string name="pref_file">com.example.MangeText.PREFERENCE_FILE_KEY</string>
+    <string name="cached_quote">cached_quote</string>
+    <string name="cached_date">cached_date</string>
+    <string name="cached_author">cached_author</string>
+
+    <string name="google_api_key"></string>
 </resources>
