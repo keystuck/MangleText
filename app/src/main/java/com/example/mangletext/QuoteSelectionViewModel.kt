@@ -1,17 +1,23 @@
 package com.example.mangletext
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.provider.Settings.Global.getString
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.mangletext.network.QoTD
+import com.example.mangletext.network.QuoteApi
+import kotlinx.coroutines.launch
 
 enum class QoTDStatus {LOADING, ERROR, DONE}
 
 class QuoteSelectionViewModel(inputQuote: String?, author: String?, app: Application) : AndroidViewModel(app) {
 
-    private var testQoTD = QoTD("ohthis", 9, "somebody somewhere", arrayOf("hello"), "category", "en", "1-1-01", "302423", "323492", "background", "title")
+    private val resources = getApplication<Application>().resources
+    private val backupQuote = resources.getString(R.string.backup_quote)
+    private var testQoTD = QoTD(backupQuote,
+        backupQuote.length,
+        resources.getString(R.string.backup_author),
+        arrayOf("hello"), "category", "en", "1-1-01", "302423", "323492", "background", "title")
 
     private val _status = MutableLiveData<QoTDStatus>()
 
@@ -30,10 +36,13 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, app: Applica
 
     private fun getQuoteOfTheDay(inputString:String?, author: String?) {
 
-        if ( inputString != null && author != null &&
-            !inputString.isEmpty()) {
+        if (inputString != null && author != null &&
+            !inputString.isEmpty()
+        ) {
+            Log.i("QSVM", "use cached data $inputString and $author")
             _quotation.value = QoTD(inputString, inputString.length, author)
         } else {
+            Log.i("QSVM", "get data from network")
             _quotation.value = testQoTD
 //        viewModelScope.launch{
 //            _status.value = QoTDStatus.LOADING
@@ -46,9 +55,10 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, app: Applica
 //            } catch (e: Exception){
 //                _status.value = QoTDStatus.ERROR
 //                _quotation.value = null
-//                Log.i("QuoteSelectionViewModel", "error")
+//                Log.i("QuoteSelectionViewModel", "${e.message}")
 //            }
 //        }
+
         }
     }
 

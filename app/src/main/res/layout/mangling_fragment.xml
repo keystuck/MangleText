@@ -79,6 +79,7 @@
         app:layout_constraintTop_toBottomOf="@id/translate_label_1"
         android:textSize="@dimen/text_size_medium"
         tools:text="@string/translated_through_czech"
+        android:text="@{viewModel.outputQuote}"
         android:gravity="center" />
 
 

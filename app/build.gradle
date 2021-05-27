@@ -11,6 +11,7 @@ android {
 
     packagingOptions {
         exclude 'project.properties'
+        exclude 'META-INF/INDEX.LIST'
     }
 
     defaultConfig {
@@ -79,4 +80,7 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     annotationProcessor 'com.google.cloud:google-cloud-translate:1.97.3'
+
+    //ML kit
+    implementation 'com.google.mlkit:translate:16.1.2'
 }

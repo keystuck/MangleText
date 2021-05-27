@@ -10,12 +10,18 @@
     <string name="lang_trans">Language pathway used</string>
     <string name="trans_text">Translated text</string>
     <string name="translate_btn">Translate me</string>
-    <string name="translated_through_czech">Translated into Czech and back into English becomes</string>
+    <string name="translated_through_czech">Translated through several languages becomes</string>
 
     <string name="pref_file">com.example.MangeText.PREFERENCE_FILE_KEY</string>
     <string name="cached_quote">cached_quote</string>
     <string name="cached_date">cached_date</string>
     <string name="cached_author">cached_author</string>
+    <string name="backup_quote">Betty Botter bought some butter
+But she said the butter’s bitter
+If I put it in my batter, it will make my batter bitter
+But a bit of better butter will make my batter better
+So ‘twas better Betty Botter bought a bit of better butter</string>
+    <string name="backup_author">Unknown</string>
 
     <string name="google_api_key"></string>
 </resources>

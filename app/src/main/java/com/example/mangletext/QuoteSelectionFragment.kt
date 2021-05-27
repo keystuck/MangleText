@@ -36,10 +36,10 @@ class QuoteSelectionFragment : Fragment() {
         val simpleDateFormat = SimpleDateFormat(pattern)
 
         //real date
-//        val date: String = simpleDateFormat.format(Date())
+     val date: String = simpleDateFormat.format(Date())
 
         //test date to force mismatch
-        val date = "2020-03-01"
+   //     val date = "2020-03-01"
 
         var use_cached = false
         var quotation = ""
@@ -66,22 +66,31 @@ class QuoteSelectionFragment : Fragment() {
 
                 }
         }
-        if (!use_cached) {
-            cacheNewData(quotation, author, prefs, date)
-        }
-        binding.lifecycleOwner = this
 
+        binding.lifecycleOwner = this
+            Log.i("QSVM", "quotation $quotation and author $author")
             val viewModelFactory = QuoteSelectionViewModelFactory(
                 quotation,
                 author,
                 requireNotNull(activity).application
             )
-            binding.viewModel =
+
+        val viewModel =
                 ViewModelProvider(this, viewModelFactory).get(QuoteSelectionViewModel::class.java)
+        binding.viewModel = viewModel
+        if (!use_cached || quotation.isEmpty()) {
+            cacheNewData(viewModel.quotation.value!!.quote,
+                viewModel.quotation.value!!.author,
+                prefs,
+                date)
+
+        }
 
         binding.btnTakeMe.setOnClickListener(View.OnClickListener {
             if (binding.tvYourOwnText.text.isEmpty()){
                 Log.i("QuoteSelectionFragment", "empty so translate my friend here")
+                quotation = binding.tvQotdText.text.toString()
+                author = binding.authorName.text.toString()
             }
             else {
                 quotation = binding.tvYourOwnText.text.toString()
