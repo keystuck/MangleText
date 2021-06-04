@@ -10,7 +10,11 @@
     <string name="lang_trans">Language pathway used</string>
     <string name="trans_text">Translated text</string>
     <string name="translate_btn">Translate me</string>
-    <string name="translated_through_czech">Translated through several languages becomes</string>
+    <string name="translated_through">Translated through Korean, Malay, Hindi, Belarusian, and Chinese becomes</string>
+    <string name="save_trans">Save original and translated text</string>
+    <string name="please_wait">Please wait...</string>
+
+    <string name="saved_btn">See saved translations</string>
 
     <string name="pref_file">com.example.MangeText.PREFERENCE_FILE_KEY</string>
     <string name="cached_quote">cached_quote</string>

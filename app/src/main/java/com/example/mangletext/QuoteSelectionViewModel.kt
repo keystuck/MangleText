@@ -3,6 +3,7 @@ package com.example.mangletext
 import android.app.Application
 import android.provider.Settings.Global.getString
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.mangletext.network.QoTD
 import com.example.mangletext.network.QuoteApi
@@ -43,21 +44,22 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, app: Applica
             _quotation.value = QoTD(inputString, inputString.length, author)
         } else {
             Log.i("QSVM", "get data from network")
-            _quotation.value = testQoTD
-//        viewModelScope.launch{
-//            _status.value = QoTDStatus.LOADING
-//            try{
-//                var qoTD = QuoteApi.retrofitService.getQuote().contents.quotes[0]
-//                _quotation.value = qoTD
-//                _status.value = QoTDStatus.DONE
-//                Log.i("QuoteSelectionViewModel", "done: ${qoTD.quote}")
-//
-//            } catch (e: Exception){
-//                _status.value = QoTDStatus.ERROR
-//                _quotation.value = null
-//                Log.i("QuoteSelectionViewModel", "${e.message}")
-//            }
-//        }
+//            _quotation.value = testQoTD
+        viewModelScope.launch{
+            _status.value = QoTDStatus.LOADING
+            try{
+                var qoTD = QuoteApi.retrofitService.getQuote().contents.quotes[0]
+                _quotation.value = qoTD
+                _status.value = QoTDStatus.DONE
+                Log.i("QuoteSelectionViewModel", "done: ${qoTD.quote}")
+
+            } catch (e: Exception){
+                _status.value = QoTDStatus.ERROR
+                _quotation.value = testQoTD
+                Toast.makeText(getApplication(), "unable to retrieve quote; using sample instead", Toast.LENGTH_SHORT).show()
+                Log.i("QuoteSelectionViewModel", "${e.message}")
+            }
+        }
 
         }
     }

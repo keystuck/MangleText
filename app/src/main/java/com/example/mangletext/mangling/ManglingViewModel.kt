@@ -6,6 +6,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
+import com.example.mangletext.QuoteSelectionFragmentDirections
+import com.example.mangletext.savedquotes.QATObject
 import com.google.cloud.translate.Translate
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.common.model.RemoteModelManager
@@ -16,18 +19,17 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
-class ManglingViewModel(private val repo: TranslationRepository, inputQuote: String, author:String, app: Application) : AndroidViewModel(app) {
-    private val languageList = listOf("english", "korean", "malay", "hindi", "belarusian", "chinese", "english")
+class ManglingViewModel(private val repo: TranslationRepository, inputQuote: String, author:String, outputQuote: String = "", app: Application) : AndroidViewModel(app) {
 
-    val result = repo.finalTrans
 
     private val _quotation = MutableLiveData<String>()
     private val _author = MutableLiveData<String>()
-    private val _translatedquotes = MutableLiveData<ArrayList<String>>()
-    private val _languages = MutableLiveData<ArrayList<String>>()
 
-    private val _outputQuote =  MutableLiveData<String>()
+    private val _outputQuote =  repo.finalTrans
+    private val _status = repo.status
 
     val quotation: LiveData<String>
         get() = _quotation
@@ -35,14 +37,11 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
     val author: LiveData<String>
         get() = _author
 
-    val translatedquotes: LiveData<ArrayList<String>>
-        get() = _translatedquotes
-
-    val languages: LiveData<ArrayList<String>>
-        get() = _languages
-
     val outputQuote: LiveData<String>
         get() = _outputQuote
+
+    val status: LiveData<String>
+        get() = _status
 
 
     init{
@@ -64,11 +63,21 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
                 Log.i("MVM", "inside launchDataLoad")
                 block()
             } catch (e: Exception){
-                Log.i("MVM", "Problem")
+                Log.i("MVM", "Problem: ${e.message}")
             }
         }
     }
 
+    fun saveQAT(): QATObject{
+
+        val pattern = "yyyy-MM-dd"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+
+        val date: String = simpleDateFormat.format(Date())
+        val quoteToSave = QATObject(_quotation.value!!, _author.value!!, _outputQuote.value!!, date)
+
+        return quoteToSave
+    }
 
 
 //    suspend fun translateOnce(input: String, lang1: String, lang2: String){

@@ -36,10 +36,10 @@ class QuoteSelectionFragment : Fragment() {
         val simpleDateFormat = SimpleDateFormat(pattern)
 
         //real date
-     val date: String = simpleDateFormat.format(Date())
+    val date: String = simpleDateFormat.format(Date())
 
         //test date to force mismatch
-   //     val date = "2020-03-01"
+//      val date = "2020-03-02"
 
         var use_cached = false
         var quotation = ""
@@ -54,7 +54,7 @@ class QuoteSelectionFragment : Fragment() {
                 if (date.equals(cached_date) &&
                         prefs.contains(getString(R.string.cached_quote))){
                             use_cached = true
-                        Log.i("QuoteSelectionFragment","everything good so no viewmodel???")
+                        Log.i("QuoteSelectionFragment","saved today's so no network")
                     quotation = prefs.getString(getString(R.string.cached_quote), "quote missing") ?: ""
                     author = prefs.getString(getString(R.string.cached_author), "author missing") ?: ""
                     Log.i("QuoteSelectionFragment", "get cached quote $quotation")
@@ -78,11 +78,16 @@ class QuoteSelectionFragment : Fragment() {
         val viewModel =
                 ViewModelProvider(this, viewModelFactory).get(QuoteSelectionViewModel::class.java)
         binding.viewModel = viewModel
-        if (!use_cached || quotation.isEmpty()) {
-            cacheNewData(viewModel.quotation.value!!.quote,
-                viewModel.quotation.value!!.author,
-                prefs,
-                date)
+        if (viewModel.quotation.value != null){
+           if (!use_cached || quotation.isEmpty()) {
+               Log.i("QSVM", "caching data with date $date")
+                cacheNewData(
+                    viewModel.quotation.value!!.quote ?: "",
+                    viewModel.quotation.value!!.author ?: "",
+                    prefs,
+                    date
+                )
+            }
 
         }
 
@@ -98,10 +103,15 @@ class QuoteSelectionFragment : Fragment() {
                 Log.i("QuoteSelectionFrahgment", "I want to use my words")
 
             }
-            val action = QuoteSelectionFragmentDirections.actionQuoteSelectionFragmentToManglingFragment(quotation, author)
+            val action = QuoteSelectionFragmentDirections.actionQuoteSelectionFragmentToManglingFragment(quotation, author, "")
             this.findNavController().navigate(action)
 
         })
+
+        binding.btnSeeList.setOnClickListener{
+            val action = QuoteSelectionFragmentDirections.actionQuoteSelectionFragmentToSavedQuotesFragment( null)
+            this.findNavController().navigate(action)
+        }
 
 
         return binding.root

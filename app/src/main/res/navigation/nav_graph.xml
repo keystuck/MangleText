@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_quoteSelectionFragment_to_manglingFragment"
             app:destination="@id/manglingFragment" />
+        <action
+            android:id="@+id/action_quoteSelectionFragment_to_savedQuotesFragment"
+            app:destination="@id/savedQuotesFragment" />
     </fragment>
     <fragment
         android:id="@+id/manglingFragment"
@@ -29,5 +32,24 @@
         <argument
             android:name="author"
             app:argType="string" />
+        <argument
+            android:name="output"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_manglingFragment_to_savedQuotesFragment"
+            app:destination="@id/savedQuotesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedQuotesFragment"
+        android:name="com.example.mangletext.savedquotes.SavedQuotesFragment"
+        android:label="SavedQuotesFragment" >
+        <argument
+            android:name="quoteToSave"
+            app:argType="com.example.mangletext.savedquotes.QATObject"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_savedQuotesFragment_to_manglingFragment"
+            app:destination="@id/manglingFragment"
+            app:popUpTo="@id/savedQuotesFragment" />
     </fragment>
 </navigation>

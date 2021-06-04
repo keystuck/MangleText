@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
 }
@@ -54,6 +55,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'androidx.room:room-runtime:2.3.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -61,9 +63,12 @@ dependencies {
     // Moshi
     implementation "com.squareup.moshi:moshi:$version_moshi"
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+
+    kapt 'androidx.room:room-compiler:2.3.0'
+    implementation "androidx.work:work-runtime-ktx:$version_work"
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-reflect
     runtimeOnly group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.5.0'
-
+    implementation "androidx.room:room-ktx:2.3.0"
 
     // Retrofit with Moshi Converter
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
@@ -73,6 +78,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
 //Logging Network Calls
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+
+
+    implementation 'com.google.guava:guava:27.0.1-android'
 
     //Google Translate
     implementation('com.google.cloud:google-cloud-translate:1.12.0') {
