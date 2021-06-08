@@ -49,7 +49,7 @@ class QuoteSelectionFragment : Fragment() {
 
                 val cached_date = prefs.getString(getString(R.string.cached_date), "0")
             Log.i("QuoteSelectionFragment", "retrieved date $date compared to $cached_date")
-
+            //TODO: isn't caching??
             //if the cached date is the current (or test) date, retrieve cached data
                 if (date.equals(cached_date) &&
                         prefs.contains(getString(R.string.cached_quote))){
@@ -65,6 +65,8 @@ class QuoteSelectionFragment : Fragment() {
                     }
 
                 }
+        } else {
+            Log.i("QuoteSelectionFragment", "nothing in prefs")
         }
 
         binding.lifecycleOwner = this

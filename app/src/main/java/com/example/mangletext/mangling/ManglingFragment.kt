@@ -37,6 +37,7 @@ class ManglingFragment : Fragment() {
 
         val navController = this.findNavController()
 
+        //TODO: make this not always go to the savedtexts
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
          object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
@@ -56,8 +57,8 @@ class ManglingFragment : Fragment() {
             ManglingViewModelFactory(repository, quotation, author, outputQuote, requireNotNull(activity).application)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ManglingViewModel::class.java)
         binding.viewModel = viewModel
-
-        if (!outputQuote.isEmpty()){
+        Log.i("ManglingFramgent", "quotation should be ${viewModel.quotation.value}")
+        if (outputQuote.isNotEmpty()){
             repository.setTranslation(outputQuote)
             binding.btnTranslate.visibility = Button.GONE
            } else {

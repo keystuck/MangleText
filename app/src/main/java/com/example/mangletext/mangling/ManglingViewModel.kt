@@ -31,6 +31,8 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
     private val _outputQuote =  repo.finalTrans
     private val _status = repo.status
 
+    private var first: Boolean
+
     val quotation: LiveData<String>
         get() = _quotation
 
@@ -47,13 +49,21 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
     init{
         _quotation.value = inputQuote
         _author.value = author
+        first = true
 
     }
 
     fun getTranslation(){
         Log.i("MVM", "inside getTranslation")
-        launchDataLoad{
-           repo.startTranslating(_quotation.value!!)
+        if (first) {
+            launchDataLoad {
+                repo.startTranslating(_quotation.value!!)
+                first = false
+            }
+        }else {
+            launchDataLoad {
+                repo.startTranslating(_outputQuote.value!!)
+            }
         }
     }
 

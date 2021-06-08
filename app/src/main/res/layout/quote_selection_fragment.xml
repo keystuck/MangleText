@@ -82,6 +82,7 @@
 
         <EditText
             android:id="@+id/tv_your_own_text"
+            android:background="@color/design_default_color_primary"
             android:textSize="@dimen/text_size_medium"
             android:layout_width="match_parent"
             android:layout_height="200dp"

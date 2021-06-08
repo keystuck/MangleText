@@ -14,25 +14,25 @@ import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 class TranslationRepository() {
+    private val English = TranslateLanguage.ENGLISH
     private val languageList =
-        listOf(TranslateLanguage.ENGLISH,
+        listOf(
             TranslateLanguage.KOREAN,
             TranslateLanguage.MALAY,
             TranslateLanguage.HINDI,
             TranslateLanguage.BELARUSIAN,
-            TranslateLanguage.CHINESE,
-            TranslateLanguage.ENGLISH)
+            TranslateLanguage.CHINESE)
 
 
     private val displayLanguageList =
-        listOf("English",
+        listOf(
         "Korean",
         "Malay",
         "Hindi",
         "Belarusian",
-        "Chinese",
-        "English")
+        "Chinese")
     private var transCounter = 0;
+
 
 
 
@@ -71,9 +71,11 @@ class TranslationRepository() {
 
     fun getTranslation(){
 
-        if (transCounter < languageList.size-1) {
-            var lang1 = languageList[transCounter]
-            var lang2 = languageList[transCounter + 1]
+        if (transCounter >= languageList.size-1){
+            transCounter = 0
+        }
+            var lang1 = English
+            var lang2 = languageList[transCounter]
             Log.i("Repo", "from $lang1 to $lang2")
 
             try {
@@ -82,7 +84,13 @@ class TranslationRepository() {
                     .setTargetLanguage(lang2)
                     .build()
 
+                val options2 = TranslatorOptions.Builder()
+                    .setSourceLanguage(lang2)
+                    .setTargetLanguage(lang1)
+                    .build()
+
                 val toTranslator = Translation.getClient(options)
+                val toTranslator2 = Translation.getClient(options2)
 
                 var conditions = DownloadConditions.Builder()
                     .requireWifi()
@@ -90,18 +98,15 @@ class TranslationRepository() {
 
                 toTranslator.downloadModelIfNeeded(conditions)
                     .addOnSuccessListener {
-                        Log.i("MVM", "how about this")
-                        _status.value = "Translating into ${displayLanguageList[transCounter + 1]}..."
+                        _status.value = "Translating into ${displayLanguageList[transCounter]}..."
                         toTranslator.translate(translation)
                             .addOnSuccessListener { translatedText ->
-                                translation = translatedText
+                                toTranslator.translate(translatedText)
+                                    .addOnSuccessListener { translated2 ->
+                                        _finalTrans.value = translated2
+                                    }
                                 transCounter++
-                                getTranslation()
-                                if (transCounter == languageList.size - 1){
-                                    _finalTrans.value = translatedText
-                                    _status.value = "Save translation"
-                                }
-                                Log.i("Repo", "setting translation to $translation")
+                                Log.i("Repo", "setting translation to $_finalTrans.value")
                             }
                             .addOnFailureListener {
                                 Log.i("TransRepo", "problem?")
@@ -116,5 +121,4 @@ class TranslationRepository() {
             }
         }
 
-    }
 }
