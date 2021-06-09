@@ -7,9 +7,11 @@
             name="viewModel"
             type="com.example.mangletext.mangling.ManglingViewModel" />
     </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/view_master"
     android:padding="20dp"
     tools:context=".mangling.ManglingFragment">
 
@@ -77,18 +79,27 @@
     <TextView
         android:id="@+id/translated_text_1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@color/design_default_color_primary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/translate_label_1"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="@dimen/text_size_medium"
         android:textColor="@color/black"
         tools:text="@string/translated_through"
         android:text="@{viewModel.outputQuote}"
         android:gravity="center" />
 
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_trans"
+        app:layout_constraintTop_toBottomOf="@id/translated_text_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.mangletext.QuoteSelectionFragmentDirections
 import com.example.mangletext.savedquotes.QATObject
-import com.google.cloud.translate.Translate
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.common.model.RemoteModelManager
 import com.google.mlkit.nl.translate.TranslateLanguage
@@ -67,6 +66,7 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
         }
     }
 
+    //TODO: is this helping?
     private fun launchDataLoad(block: suspend() -> Unit): Job {
         return viewModelScope.launch {
             try {
@@ -84,63 +84,21 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
         val simpleDateFormat = SimpleDateFormat(pattern)
 
         val date: String = simpleDateFormat.format(Date())
-        val quoteToSave = QATObject(_quotation.value!!, _author.value!!, _outputQuote.value!!, date)
+
+        //To allow you to save before translating
+        val outQuote: String
+        if (_outputQuote.value.isNullOrEmpty()){
+            outQuote = ""
+        } else {
+            outQuote = outputQuote.value!!
+        }
+        val quoteToSave = QATObject(_quotation.value!!, _author.value!!, outQuote, date)
 
         return quoteToSave
     }
 
 
-//    suspend fun translateOnce(input: String, lang1: String, lang2: String){
-  //      Log.i("ManglingViewModel", "about to start working")
 
-//        var language1 = when (lang1){
-//            "korean" -> TranslateLanguage.KOREAN
-//            "malay" -> TranslateLanguage.MALAY
-//            "hindi" -> TranslateLanguage.HINDI
-//            "belarusian" -> TranslateLanguage.BELARUSIAN
-//             "chinese" -> TranslateLanguage.CHINESE
-//            else -> TranslateLanguage.ENGLISH
-//        }
-//        var language2 = when (lang2){
-//            "korean" -> TranslateLanguage.KOREAN
-//            "malay" -> TranslateLanguage.MALAY
-//            "hindi" -> TranslateLanguage.HINDI
-//            "belarusian" -> TranslateLanguage.BELARUSIAN
-//            "chinese" -> TranslateLanguage.CHINESE
-//            else -> TranslateLanguage.ENGLISH
-//        }
-
-
-//        val options = TranslatorOptions.Builder()
-//            .setSourceLanguage(language1)
-//            .setTargetLanguage(language2)
-//            .build()
-//
-//        val toTranslator = Translation.getClient(options)
-//
-//        var conditions = DownloadConditions.Builder()
-//            .requireWifi()
-//            .build()
-//        Log.i("MVM", "is this happening?")
-//        toTranslator.downloadModelIfNeeded(conditions)
-//            .addOnSuccessListener {
-//                Log.i("MVM", "how about this")
-//                toTranslator.translate(input)
-//                    .addOnSuccessListener { translatedText ->
-//                        _translatedquotes.value!!.add(translatedText)
-//                        Log.i("ManglingViewModel", "list size ${_translatedquotes.value!!.size}")
-//                        _languages.value!!.add(language2)
-//                    }
-//                    .addOnFailureListener {
-//                        Log.i("MVM", "problem?")
-//                    }
-//            }
-//            .addOnFailureListener {
-//                Log.i("ManglingViewModel", "problem")
-//            }
-//    }
-  //      Log.i("MVM", "finished...?")
-    //}
 
 
 

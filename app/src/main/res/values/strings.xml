@@ -15,6 +15,7 @@
     <string name="please_wait">Please wait...</string>
 
     <string name="saved_btn">See saved translations</string>
+    <string name="retrans_btn">Retranslate in a different order</string>
 
     <string name="pref_file">com.example.MangeText.PREFERENCE_FILE_KEY</string>
     <string name="cached_quote">cached_quote</string>

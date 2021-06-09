@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.MotionEventCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.mangletext.databinding.ManglingFragmentBinding
-import com.google.api.services.translate.Translate
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
@@ -35,6 +35,11 @@ class ManglingFragment : Fragment() {
         val author = args.author
         val outputQuote = args.output
 
+        binding.viewMaster.setOnTouchListener{ event ->
+            val action = MotionEvent.
+
+        }
+
         val navController = this.findNavController()
 
         //TODO: make this not always go to the savedtexts
@@ -51,8 +56,6 @@ class ManglingFragment : Fragment() {
 
         val repository = TranslationRepository()
 
-
-
         val viewModelFactory =
             ManglingViewModelFactory(repository, quotation, author, outputQuote, requireNotNull(activity).application)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ManglingViewModel::class.java)
@@ -60,16 +63,11 @@ class ManglingFragment : Fragment() {
         Log.i("ManglingFramgent", "quotation should be ${viewModel.quotation.value}")
         if (outputQuote.isNotEmpty()){
             repository.setTranslation(outputQuote)
-            binding.btnTranslate.visibility = Button.GONE
-           } else {
-               binding.btnTranslate.visibility = Button.VISIBLE
-        }
-
+           }
 
 
         binding.btnTranslate.setOnClickListener {
             //if there's nothing in "translated text", translate
-            if (binding.translatedText1.text.isEmpty()) {
                 var text = binding.tvOrigText.text
                 if (text.isNotEmpty()) {
                     Log.i("ManglingFragment", "starting now")
@@ -77,13 +75,15 @@ class ManglingFragment : Fragment() {
                 } else {
                     Toast.makeText(context, "Must enter text", Toast.LENGTH_SHORT).show()
                 }
-            }
-            //if there is something there, save it instead
-            else {
+        }
+
+        binding.btnSave.setOnClickListener{
+            if (binding.tvOrigText.text.isNullOrEmpty()){
+                Toast.makeText(context, "Must enter text", Toast.LENGTH_SHORT).show()
+            } else {
                 val quoteToSave = viewModel.saveQAT()
                 val action = ManglingFragmentDirections.actionManglingFragmentToSavedQuotesFragment(quoteToSave)
                 navController.navigate(action)
-
             }
         }
 

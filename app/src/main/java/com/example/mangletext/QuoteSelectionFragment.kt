@@ -31,38 +31,30 @@ class QuoteSelectionFragment : Fragment() {
             getString(R.string.pref_file), Context.MODE_PRIVATE
         )
 
-        //get the current date to check against the cached value
-        val pattern = "yyyy-MM-dd"
-        val simpleDateFormat = SimpleDateFormat(pattern)
 
-        //real date
-    val date: String = simpleDateFormat.format(Date())
-
-        //test date to force mismatch
-//      val date = "2020-03-02"
 
         var use_cached = false
         var quotation = ""
         var author = ""
+        var accessedDate = ""
 
         if (prefs!!.contains(getString(R.string.cached_date))){
 
                 val cached_date = prefs.getString(getString(R.string.cached_date), "0")
-            Log.i("QuoteSelectionFragment", "retrieved date $date compared to $cached_date")
+//            Log.i("QuoteSelectionFragment", "retrieved date $date compared to $cached_date")
             //TODO: isn't caching??
             //if the cached date is the current (or test) date, retrieve cached data
-                if (date.equals(cached_date) &&
-                        prefs.contains(getString(R.string.cached_quote))){
-                            use_cached = true
-                        Log.i("QuoteSelectionFragment","saved today's so no network")
+                if (prefs.contains(getString(R.string.cached_quote))){
+//                            use_cached = true
+
                     quotation = prefs.getString(getString(R.string.cached_quote), "quote missing") ?: ""
                     author = prefs.getString(getString(R.string.cached_author), "author missing") ?: ""
-                    Log.i("QuoteSelectionFragment", "get cached quote $quotation")
-
-                    if (prefs.contains("lastAccessed")){
-                        Log.i("QuoteSelectionFragment",
-                        prefs.getString("lastAccessed", "no value").toString())
-                    }
+                    accessedDate = prefs.getString("cached_date", "date missing") ?: ""
+//  
+//                    if (prefs.contains("lastAccessed")){
+//                        Log.i("QuoteSelectionFragment",
+//                        prefs.getString("lastAccessed", "no value").toString())
+//                    }
 
                 }
         } else {
@@ -74,24 +66,42 @@ class QuoteSelectionFragment : Fragment() {
             val viewModelFactory = QuoteSelectionViewModelFactory(
                 quotation,
                 author,
+                accessedDate,
                 requireNotNull(activity).application
             )
 
         val viewModel =
                 ViewModelProvider(this, viewModelFactory).get(QuoteSelectionViewModel::class.java)
         binding.viewModel = viewModel
-        if (viewModel.quotation.value != null){
-           if (!use_cached || quotation.isEmpty()) {
-               Log.i("QSVM", "caching data with date $date")
+
+
+//        //TODO: checks before the quotation is retrieved. Move into viewModel?
+//        if (viewModel.quotation.value != null){
+//            Log.i("QSVM", "not null so was cached? $use_cached is quotation empty? ${quotation.isEmpty()}")
+//           if (!use_cached || quotation.isEmpty()) {
+//               Log.i("QSVM", "caching data with date $date")
+//                cacheNewData(
+//                    viewModel.quotation.value!!.quote ?: "",
+//                    viewModel.quotation.value!!.author ?: "",
+//                    prefs,
+//                    date
+//                )
+//            }
+//
+//        }
+
+        viewModel.dateForCache.observe(viewLifecycleOwner, androidx.lifecycle.Observer { date ->
+            if(date.isNotEmpty()){
                 cacheNewData(
-                    viewModel.quotation.value!!.quote ?: "",
-                    viewModel.quotation.value!!.author ?: "",
+                    viewModel.quotation.value!!.quote,
+                    viewModel.quotation.value!!.author,
                     prefs,
                     date
                 )
+                Log.i("QuoteSelectionFragment", "caching new quote: ${viewModel.quotation.value}")
             }
-
-        }
+        })
+        
 
         binding.btnTakeMe.setOnClickListener(View.OnClickListener {
             if (binding.tvYourOwnText.text.isEmpty()){
@@ -102,7 +112,7 @@ class QuoteSelectionFragment : Fragment() {
             else {
                 quotation = binding.tvYourOwnText.text.toString()
                 author = "You"
-                Log.i("QuoteSelectionFrahgment", "I want to use my words")
+                Log.i("QuoteSelectionFragment", "I want to use my words")
 
             }
             val action = QuoteSelectionFragmentDirections.actionQuoteSelectionFragmentToManglingFragment(quotation, author, "")
@@ -123,7 +133,6 @@ class QuoteSelectionFragment : Fragment() {
 
         var timeStored = System.currentTimeMillis()
 
-        Log.i("QuoteSelectionFragment", "get new quote")
         with(prefs.edit()) {
             putString(
                 getString(R.string.cached_quote),
@@ -141,15 +150,10 @@ class QuoteSelectionFragment : Fragment() {
                 "lastAccessed",
                 timeStored.toString()
             )
-            Log.i("QuoteSelectionFragment", "storing date $date")
-            Log.i("QuoteSelectionFragment", "storing at ${timeStored.toString()}")
+
             apply()
         }
-//        viewModel.quotation.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//            binding.tvQotdText.text = it?.quote
-//            binding.authorName.text = it?.author
-//            Log.i("QuoteSelectionFragment", "value changed")
-//        })
+
     }
 
 }

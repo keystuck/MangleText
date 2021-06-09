@@ -18,6 +18,10 @@ class SavedQuotesFragment : Fragment() {
 
     val args: SavedQuotesFragmentArgs by navArgs()
 
+
+
+
+    //TODO: add deletion ability
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +35,8 @@ class SavedQuotesFragment : Fragment() {
         val binding = SavedQuotesFragmentBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+
 
         // if brought here by "save quote," save quote
         val quoteToSave = args.quoteToSave

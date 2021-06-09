@@ -3,7 +3,6 @@ package com.example.mangletext.mangling
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.api.services.translate.Translate
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
@@ -31,7 +30,7 @@ class TranslationRepository() {
         "Hindi",
         "Belarusian",
         "Chinese")
-    private var transCounter = 0;
+    private var transCounter = 1;
 
 
 
@@ -42,6 +41,7 @@ class TranslationRepository() {
     val finalTrans: LiveData<String>
         get() = _finalTrans
 
+    //TODO: currently not helpful
     //field to show if we need to translate at all
     //1: to translate
     //2: translating
@@ -71,7 +71,7 @@ class TranslationRepository() {
 
     fun getTranslation(){
 
-        if (transCounter >= languageList.size-1){
+        if (transCounter >= languageList.size){
             transCounter = 0
         }
             var lang1 = English
@@ -101,7 +101,7 @@ class TranslationRepository() {
                         _status.value = "Translating into ${displayLanguageList[transCounter]}..."
                         toTranslator.translate(translation)
                             .addOnSuccessListener { translatedText ->
-                                toTranslator.translate(translatedText)
+                                toTranslator2.translate(translatedText)
                                     .addOnSuccessListener { translated2 ->
                                         _finalTrans.value = translated2
                                     }
