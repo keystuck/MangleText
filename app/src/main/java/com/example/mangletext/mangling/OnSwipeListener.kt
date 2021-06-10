@@ -6,21 +6,27 @@ import android.view.MotionEvent
 import android.view.View
 import kotlin.math.abs
 
-class OnSwipeListener: View.OnTouchListener {
+/* Copyright (c) 2019 Nathan Esquenazi
+/ https://gist.github.com/nesquena/ed58f34791da00da9751
+*/
+open class OnSwipeListener(c: Context): View.OnTouchListener {
 
-    private lateinit var gestureDetector: GestureDetector
+    companion object {
+        private val SWIPE_THRESHOLD = 100
+        private val SWIPE_VELOCITY_THRESHOLD = 100
+    }
 
-    fun OnSwipeListener(c: Context){
-        gestureDetector = GestureDetector(c, GestureListener)
+    private val gestureDetector: GestureDetector
+
+    init{
+        gestureDetector = GestureDetector(c, GestureListener())
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         return gestureDetector.onTouchEvent(event)
     }
 
-    private class GestureListener: GestureDetector.SimpleOnGestureListener{
-        private val SWIPE_THRESHOLD = 100
-        private val SWIPE_VELOCITY_THRESHOLD = 100
+    private inner class GestureListener: GestureDetector.SimpleOnGestureListener(){
 
         override fun onDown(e: MotionEvent?): Boolean {
             return true
@@ -32,20 +38,22 @@ class OnSwipeListener: View.OnTouchListener {
             velocityX: Float,
             velocityY: Float
         ): Boolean {
-            var result = false
+            val result = false
             try {
-                var diffY = e2!!.getY() - e1!!.getY()
-                var diffX = e2!!.getX() - e1!!.getX()
+                val diffY = e2!!.getY() - e1!!.getY()
                 if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
                     if (diffY > 0){
                         onSwipeDown()
+
                     } else
                         onSwipeUp()
                 }
             } catch (e: Exception){
                 e.printStackTrace()
             }
-
+            return result
         }
     }
+    open fun onSwipeDown(){}
+    open fun onSwipeUp() {}
 }

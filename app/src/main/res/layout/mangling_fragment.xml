@@ -8,9 +8,10 @@
             type="com.example.mangletext.mangling.ManglingViewModel" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.motion.widget.MotionLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layoutDescription="@xml/animation"
     android:id="@+id/view_master"
     android:padding="20dp"
     tools:context=".mangling.ManglingFragment">
@@ -100,6 +101,6 @@
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
 
 </layout>

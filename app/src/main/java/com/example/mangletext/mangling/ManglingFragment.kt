@@ -35,10 +35,7 @@ class ManglingFragment : Fragment() {
         val author = args.author
         val outputQuote = args.output
 
-        binding.viewMaster.setOnTouchListener{ event ->
-            val action = MotionEvent.
 
-        }
 
         val navController = this.findNavController()
 
@@ -65,16 +62,15 @@ class ManglingFragment : Fragment() {
             repository.setTranslation(outputQuote)
            }
 
+        binding.viewMaster.setOnTouchListener(object: OnSwipeListener(requireActivity()){
+            override fun onSwipeDown(){
+                translate(viewModel)
+            }
+        })
 
         binding.btnTranslate.setOnClickListener {
             //if there's nothing in "translated text", translate
-                var text = binding.tvOrigText.text
-                if (text.isNotEmpty()) {
-                    Log.i("ManglingFragment", "starting now")
-                    viewModel.getTranslation()
-                } else {
-                    Toast.makeText(context, "Must enter text", Toast.LENGTH_SHORT).show()
-                }
+            translate(viewModel)
         }
 
         binding.btnSave.setOnClickListener{
@@ -91,6 +87,15 @@ class ManglingFragment : Fragment() {
 
     }
 
+    private fun translate(viewModel: ManglingViewModel) {
+        var text = binding.tvOrigText.text
+        if (text.isNotEmpty()) {
+            Log.i("ManglingFragment", "starting now")
+            viewModel.getTranslation()
+        } else {
+            Toast.makeText(context, "Must enter text", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 
 }
