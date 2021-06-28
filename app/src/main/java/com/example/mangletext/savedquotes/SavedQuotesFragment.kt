@@ -11,17 +11,17 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mangletext.databinding.SavedQuotesFragmentBinding
 import com.example.mangletext.mangling.ManglingFragmentDirections
+import com.example.mangletext.mangling.OnSwipeListener
 
 class SavedQuotesFragment : Fragment() {
 
     val args: SavedQuotesFragmentArgs by navArgs()
 
 
-
-
-    //TODO: add deletion ability
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +38,7 @@ class SavedQuotesFragment : Fragment() {
 
 
 
+
         // if brought here by "save quote," save quote
         val quoteToSave = args.quoteToSave
         if (quoteToSave != null){
@@ -47,17 +48,28 @@ class SavedQuotesFragment : Fragment() {
 
         val itemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         binding.savedQuotesRecview.addItemDecoration(itemDecoration)
+
         viewModel.savedQuotes.observe(viewLifecycleOwner, Observer {
             binding.savedQuotesRecview.adapter = QATRecyclerViewAdapter(viewModel.savedQuotes.value!!,
                 {
                     val action = SavedQuotesFragmentDirections.actionSavedQuotesFragmentToManglingFragment(
-                        it.quotation, it.author, it.translation
+                        it.quotation, it.author, it.translation, "saved"
                     )
                     this.findNavController().navigate(action)
                 }
 
             )
         })
+
+        val swipeToDeleteCallback = object: SwipeToDeleteCallback(){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val pos = viewHolder.adapterPosition
+              viewModel.deleteAt(pos)
+            }
+        }
+        val itemToDeleteCallback = ItemTouchHelper(swipeToDeleteCallback)
+        itemToDeleteCallback.attachToRecyclerView(binding.savedQuotesRecview)
+
 
 
 

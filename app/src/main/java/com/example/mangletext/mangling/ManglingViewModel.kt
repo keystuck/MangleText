@@ -11,10 +11,7 @@ import com.example.mangletext.QuoteSelectionFragmentDirections
 import com.example.mangletext.savedquotes.QATObject
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.common.model.RemoteModelManager
-import com.google.mlkit.nl.translate.TranslateLanguage
-import com.google.mlkit.nl.translate.TranslateRemoteModel
-import com.google.mlkit.nl.translate.Translation
-import com.google.mlkit.nl.translate.TranslatorOptions
+import com.google.mlkit.nl.translate.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -27,7 +24,7 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
     private val _quotation = MutableLiveData<String>()
     private val _author = MutableLiveData<String>()
 
-    private val _outputQuote =  repo.finalTrans
+    private val _outputQuote = repo.finalTrans
     private val _status = repo.status
 
     private var first: Boolean
@@ -45,21 +42,20 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
         get() = _status
 
 
-    init{
+    init {
         _quotation.value = inputQuote
         _author.value = author
         first = true
-
     }
 
-    fun getTranslation(){
+    fun getTranslation() {
         Log.i("MVM", "inside getTranslation")
         if (first) {
             launchDataLoad {
                 repo.startTranslating(_quotation.value!!)
                 first = false
             }
-        }else {
+        } else {
             launchDataLoad {
                 repo.startTranslating(_outputQuote.value!!)
             }
@@ -67,18 +63,18 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
     }
 
     //TODO: is this helping?
-    private fun launchDataLoad(block: suspend() -> Unit): Job {
+    private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
                 Log.i("MVM", "inside launchDataLoad")
                 block()
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 Log.i("MVM", "Problem: ${e.message}")
             }
         }
     }
 
-    fun saveQAT(): QATObject{
+    fun saveQAT(): QATObject {
 
         val pattern = "yyyy-MM-dd"
         val simpleDateFormat = SimpleDateFormat(pattern)
@@ -87,7 +83,7 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
 
         //To allow you to save before translating
         val outQuote: String
-        if (_outputQuote.value.isNullOrEmpty()){
+        if (_outputQuote.value.isNullOrEmpty()) {
             outQuote = ""
         } else {
             outQuote = outputQuote.value!!
@@ -97,6 +93,15 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
         return quoteToSave
     }
 
+
+    val languageList =
+        listOf(
+            TranslateLanguage.KOREAN,
+            TranslateLanguage.MALAY,
+            TranslateLanguage.HINDI,
+            TranslateLanguage.BELARUSIAN,
+            TranslateLanguage.CHINESE
+        )
 
 
 

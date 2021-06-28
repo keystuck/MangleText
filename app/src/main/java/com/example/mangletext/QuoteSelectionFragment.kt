@@ -41,9 +41,7 @@ class QuoteSelectionFragment : Fragment() {
         if (prefs!!.contains(getString(R.string.cached_date))){
 
                 val cached_date = prefs.getString(getString(R.string.cached_date), "0")
-//            Log.i("QuoteSelectionFragment", "retrieved date $date compared to $cached_date")
-            //TODO: isn't caching??
-            //if the cached date is the current (or test) date, retrieve cached data
+
                 if (prefs.contains(getString(R.string.cached_quote))){
 //                            use_cached = true
 
@@ -75,20 +73,7 @@ class QuoteSelectionFragment : Fragment() {
         binding.viewModel = viewModel
 
 
-//        //TODO: checks before the quotation is retrieved. Move into viewModel?
-//        if (viewModel.quotation.value != null){
-//            Log.i("QSVM", "not null so was cached? $use_cached is quotation empty? ${quotation.isEmpty()}")
-//           if (!use_cached || quotation.isEmpty()) {
-//               Log.i("QSVM", "caching data with date $date")
-//                cacheNewData(
-//                    viewModel.quotation.value!!.quote ?: "",
-//                    viewModel.quotation.value!!.author ?: "",
-//                    prefs,
-//                    date
-//                )
-//            }
-//
-//        }
+
 
         viewModel.dateForCache.observe(viewLifecycleOwner, androidx.lifecycle.Observer { date ->
             if(date.isNotEmpty()){
@@ -115,7 +100,8 @@ class QuoteSelectionFragment : Fragment() {
                 Log.i("QuoteSelectionFragment", "I want to use my words")
 
             }
-            val action = QuoteSelectionFragmentDirections.actionQuoteSelectionFragmentToManglingFragment(quotation, author, "")
+            val action = QuoteSelectionFragmentDirections.actionQuoteSelectionFragmentToManglingFragment(
+                quotation, author, "", "selection")
             this.findNavController().navigate(action)
 
         })

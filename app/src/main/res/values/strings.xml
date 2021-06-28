@@ -10,7 +10,10 @@
     <string name="lang_trans">Language pathway used</string>
     <string name="trans_text">Translated text</string>
     <string name="translate_btn">Translate me</string>
-    <string name="translated_through">Translated through Korean, Malay, Hindi, Belarusian, and Chinese becomes</string>
+    <string name="translate_again">Translate Again</string>
+    <string name="translated_through">After translation becomes</string>
+    <string name="translate_instr">To add a translation press the middle button. Each press
+    will translate once; please translate multiple times</string>
     <string name="save_trans">Save original and translated text</string>
     <string name="please_wait">Please wait...</string>
 

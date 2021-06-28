@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
@@ -22,7 +23,6 @@ class TranslationRepository() {
             TranslateLanguage.BELARUSIAN,
             TranslateLanguage.CHINESE)
 
-
     private val displayLanguageList =
         listOf(
         "Korean",
@@ -31,9 +31,6 @@ class TranslationRepository() {
         "Belarusian",
         "Chinese")
     private var transCounter = 1;
-
-
-
 
     val languageContext = newSingleThreadContext("languageContext")
 
@@ -62,6 +59,8 @@ class TranslationRepository() {
             }
         }
     }
+
+
 
     fun setTranslation(savedTranslation: String){
         _status.value = "Saved values"
@@ -104,6 +103,7 @@ class TranslationRepository() {
                                 toTranslator2.translate(translatedText)
                                     .addOnSuccessListener { translated2 ->
                                         _finalTrans.value = translated2
+                                        _status.value = "Translate Again"
                                     }
                                 transCounter++
                                 Log.i("Repo", "setting translation to $_finalTrans.value")
@@ -121,4 +121,29 @@ class TranslationRepository() {
             }
         }
 
+    init{
+        _status.value = "Please wait - checking for language models"
+        val conditions = DownloadConditions.Builder()
+            .requireWifi()
+            .build()
+        for(language in languageList)
+        {
+
+            val options = TranslatorOptions.Builder()
+                .setSourceLanguage(TranslateLanguage.ENGLISH)
+                .setTargetLanguage(language)
+                .build()
+
+            val translator: Translator = Translation.getClient(options)
+
+            translator.downloadModelIfNeeded(conditions)
+                .addOnSuccessListener {
+                    Log.i("ManglingViewModel", "downloaded or retrieved $language")
+                }
+                .addOnFailureListener {
+                    Log.i("ManglingViewModel", "error downloading $language")
+                }
+        }
+        _status.value = "Ready"
+    }
 }

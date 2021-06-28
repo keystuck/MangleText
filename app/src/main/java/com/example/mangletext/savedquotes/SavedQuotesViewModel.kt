@@ -42,9 +42,16 @@ class SavedQuotesViewModel(val qatDao: QATDao) : ViewModel() {
         viewModelScope.launch { saveToDB(qatObject) }
     }
 
+    fun deleteAt(position: Int){
+        viewModelScope.launch{ deleteFromDB(savedQuotes.value!!.get(position))}
+    }
+
     private suspend fun saveToDB(qatObject: QATObject){
             qatDao.insert(qatObject)
+    }
 
+    private suspend fun deleteFromDB(qatObject: QATObject){
+        qatDao.delete(qatObject)
     }
  
 }

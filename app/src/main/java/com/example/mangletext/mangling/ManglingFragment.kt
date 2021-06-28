@@ -15,9 +15,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.mangletext.databinding.ManglingFragmentBinding
 import com.google.mlkit.common.model.DownloadConditions
-import com.google.mlkit.nl.translate.TranslateLanguage
-import com.google.mlkit.nl.translate.Translation
-import com.google.mlkit.nl.translate.TranslatorOptions
+import com.google.mlkit.common.model.RemoteModelManager
+import com.google.mlkit.nl.translate.*
 
 class ManglingFragment : Fragment() {
 
@@ -31,27 +30,36 @@ class ManglingFragment : Fragment() {
 
         binding = ManglingFragmentBinding.inflate(inflater)
 
+
+
         val quotation = args.text
         val author = args.author
         val outputQuote = args.output
 
+        val source = args.from
 
 
         val navController = this.findNavController()
 
-        //TODO: make this not always go to the savedtexts
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-         object: OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                val action = ManglingFragmentDirections.actionManglingFragmentToSavedQuotesFragment(null)
-                navController.navigate(action)
-            }
-        })
+
+        if (source == "saved") {
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        val action =
+                            ManglingFragmentDirections.actionManglingFragmentToSavedQuotesFragment(
+                                null
+                            )
+                        navController.navigate(action)
+                    }
+                })
+        }
 
 
         binding.lifecycleOwner = this
 
         val repository = TranslationRepository()
+        Log.i("ManglingFragment", "status ${repository.status.value}")
 
         val viewModelFactory =
             ManglingViewModelFactory(repository, quotation, author, outputQuote, requireNotNull(activity).application)
@@ -61,17 +69,15 @@ class ManglingFragment : Fragment() {
         if (outputQuote.isNotEmpty()){
             repository.setTranslation(outputQuote)
            }
+        Log.i("ManglingFragment", "status ${repository.status.value}")
+        //TODO: delete OnSwipeListener carefully
 
-        binding.viewMaster.setOnTouchListener(object: OnSwipeListener(requireActivity()){
-            override fun onSwipeDown(){
-                translate(viewModel)
-            }
-        })
+//        binding.viewMaster.setOnTouchListener(object: OnSwipeListener(requireActivity()){
+//            override fun onSwipeDown(){
+//                translate(viewModel)
+//            }
+//        })
 
-        binding.btnTranslate.setOnClickListener {
-            //if there's nothing in "translated text", translate
-            translate(viewModel)
-        }
 
         binding.btnSave.setOnClickListener{
             if (binding.tvOrigText.text.isNullOrEmpty()){
@@ -81,6 +87,17 @@ class ManglingFragment : Fragment() {
                 val action = ManglingFragmentDirections.actionManglingFragmentToSavedQuotesFragment(quoteToSave)
                 navController.navigate(action)
             }
+        }
+
+//        binding.btnTranslate.setOnClickListener{
+//            Log.i("ManglingFragment", "button pressed")
+//            translate(viewModel)
+//
+//        }
+
+        binding.btnTester.setOnClickListener{
+            Log.i("Mangling Fragment","Yes, I am pressed")
+            translate(viewModel)
         }
 
         return binding.root

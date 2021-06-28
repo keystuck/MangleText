@@ -40,7 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="200dp"
-                android:background="@color/teal_200"
+                android:background="@color/purple_200"
+                android:textColor="@color/white"
                 android:text="@{viewModel.quotation.quote}"
                 android:textSize="@dimen/text_size_medium"
                 app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +83,8 @@
 
         <EditText
             android:id="@+id/tv_your_own_text"
-            android:background="@color/design_default_color_primary"
+            android:background="@color/purple_200"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_size_medium"
             android:layout_width="match_parent"
             android:layout_height="200dp"

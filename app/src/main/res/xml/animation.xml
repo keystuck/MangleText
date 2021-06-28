@@ -2,8 +2,29 @@
 <MotionScene xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- TODO: Define a Transition -->
+<Transition
+    app:constraintSetStart="@id/start"
+    app:constraintSetEnd="@id/end"
+    app:duration="200" >
+    <OnClick
+        app:targetId="@id/bouncy_ball"
+        app:clickAction="toggle" />
+</Transition>
 
-    <!-- TODO: Define @id/start -->
+<ConstraintSet android:id="@+id/start">
+    <Constraint
+        android:id="@+id/bouncy_ball"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="3dp"
+        app:layout_editor_absoluteY="47dp"
+        android:layout_height="17dp"
+        app:layout_editor_absoluteX="20dp" />
+</ConstraintSet>
 
-    <!-- TODO: Define @id/end -->
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/bouncy_ball"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+    </ConstraintSet>
 </MotionScene>

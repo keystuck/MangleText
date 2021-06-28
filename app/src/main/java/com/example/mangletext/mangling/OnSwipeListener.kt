@@ -40,6 +40,15 @@ open class OnSwipeListener(c: Context): View.OnTouchListener {
         ): Boolean {
             val result = false
             try {
+                val diffX = e2!!.getX() - e1!!.getX()
+                if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
+                    if (diffX > 0){
+                        onSwipeRight()
+                    } else
+                    {
+                        onSwipeLeft()
+                    }
+                }
                 val diffY = e2!!.getY() - e1!!.getY()
                 if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
                     if (diffY > 0){
@@ -56,4 +65,6 @@ open class OnSwipeListener(c: Context): View.OnTouchListener {
     }
     open fun onSwipeDown(){}
     open fun onSwipeUp() {}
+    open fun onSwipeLeft(){}
+    open fun onSwipeRight(){}
 }

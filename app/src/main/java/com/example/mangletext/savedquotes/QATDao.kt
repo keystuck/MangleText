@@ -2,6 +2,7 @@ package com.example.mangletext.savedquotes
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -12,4 +13,7 @@ interface QATDao {
 
     @Insert
     suspend fun insert(qatObject: QATObject)
+
+    @Delete
+    suspend fun delete(qatObject: QATObject)
 }
