@@ -24,22 +24,24 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
     private val _quotation = MutableLiveData<String>()
     private val _author = MutableLiveData<String>()
 
-    private val _outputQuote = repo.finalTrans
-    private val _status = repo.status
-
-    private var first: Boolean
-
     val quotation: LiveData<String>
         get() = _quotation
 
     val author: LiveData<String>
         get() = _author
 
+    private val _outputQuote = repo.finalTrans
+    private val _status = repo.status
+
+
     val outputQuote: LiveData<String>
         get() = _outputQuote
 
     val status: LiveData<String>
         get() = _status
+
+
+    private var first: Boolean
 
 
     init {
@@ -49,7 +51,6 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
     }
 
     fun getTranslation() {
-        Log.i("MVM", "inside getTranslation")
         if (first) {
             launchDataLoad {
                 repo.startTranslating(_quotation.value!!)
@@ -66,7 +67,6 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
-                Log.i("MVM", "inside launchDataLoad")
                 block()
             } catch (e: Exception) {
                 Log.i("MVM", "Problem: ${e.message}")
@@ -92,19 +92,6 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
 
         return quoteToSave
     }
-
-
-    val languageList =
-        listOf(
-            TranslateLanguage.KOREAN,
-            TranslateLanguage.MALAY,
-            TranslateLanguage.HINDI,
-            TranslateLanguage.BELARUSIAN,
-            TranslateLanguage.CHINESE
-        )
-
-
-
 
 
 }

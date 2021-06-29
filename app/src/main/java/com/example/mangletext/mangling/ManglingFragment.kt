@@ -59,24 +59,15 @@ class ManglingFragment : Fragment() {
         binding.lifecycleOwner = this
 
         val repository = TranslationRepository()
-        Log.i("ManglingFragment", "status ${repository.status.value}")
 
         val viewModelFactory =
             ManglingViewModelFactory(repository, quotation, author, outputQuote, requireNotNull(activity).application)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ManglingViewModel::class.java)
         binding.viewModel = viewModel
-        Log.i("ManglingFramgent", "quotation should be ${viewModel.quotation.value}")
         if (outputQuote.isNotEmpty()){
             repository.setTranslation(outputQuote)
            }
-        Log.i("ManglingFragment", "status ${repository.status.value}")
-        //TODO: delete OnSwipeListener carefully
 
-//        binding.viewMaster.setOnTouchListener(object: OnSwipeListener(requireActivity()){
-//            override fun onSwipeDown(){
-//                translate(viewModel)
-//            }
-//        })
 
 
         binding.btnSave.setOnClickListener{
@@ -89,15 +80,12 @@ class ManglingFragment : Fragment() {
             }
         }
 
-//        binding.btnTranslate.setOnClickListener{
-//            Log.i("ManglingFragment", "button pressed")
-//            translate(viewModel)
-//
-//        }
 
         binding.btnTester.setOnClickListener{
-            Log.i("Mangling Fragment","Yes, I am pressed")
             translate(viewModel)
+            binding.viewMaster.transitionToEnd()
+            binding.viewMaster.transitionToStart()
+
         }
 
         return binding.root
@@ -107,7 +95,6 @@ class ManglingFragment : Fragment() {
     private fun translate(viewModel: ManglingViewModel) {
         var text = binding.tvOrigText.text
         if (text.isNotEmpty()) {
-            Log.i("ManglingFragment", "starting now")
             viewModel.getTranslation()
         } else {
             Toast.makeText(context, "Must enter text", Toast.LENGTH_SHORT).show()

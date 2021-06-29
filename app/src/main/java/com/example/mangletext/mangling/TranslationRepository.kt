@@ -38,12 +38,7 @@ class TranslationRepository() {
     val finalTrans: LiveData<String>
         get() = _finalTrans
 
-    //TODO: currently not helpful
-    //field to show if we need to translate at all
-    //1: to translate
-    //2: translating
-    //3: done
-    //4: no translation
+
     private val _status = MutableLiveData<String>("Translate me")
     val status: LiveData<String>
         get() = _status
@@ -51,7 +46,6 @@ class TranslationRepository() {
     private lateinit var translation: String
 
     suspend fun startTranslating(startingText: String) = runBlocking{
-        Log.i("Repo", "status is ${_status.value}")
         translation = startingText
         withContext(languageContext){
             repeat(1){
@@ -63,7 +57,7 @@ class TranslationRepository() {
 
 
     fun setTranslation(savedTranslation: String){
-        _status.value = "Saved values"
+        _status.value = "Translate me"
         _finalTrans.value = savedTranslation
     }
 
@@ -75,7 +69,6 @@ class TranslationRepository() {
         }
             var lang1 = English
             var lang2 = languageList[transCounter]
-            Log.i("Repo", "from $lang1 to $lang2")
 
             try {
                 val options = TranslatorOptions.Builder()
@@ -97,7 +90,7 @@ class TranslationRepository() {
 
                 toTranslator.downloadModelIfNeeded(conditions)
                     .addOnSuccessListener {
-                        _status.value = "Translating into ${displayLanguageList[transCounter]}..."
+                        _status.value = "Through ${displayLanguageList[transCounter]}..."
                         toTranslator.translate(translation)
                             .addOnSuccessListener { translatedText ->
                                 toTranslator2.translate(translatedText)
@@ -106,10 +99,8 @@ class TranslationRepository() {
                                         _status.value = "Translate Again"
                                     }
                                 transCounter++
-                                Log.i("Repo", "setting translation to $_finalTrans.value")
                             }
                             .addOnFailureListener {
-                                Log.i("TransRepo", "problem?")
                                 transCounter = languageList.size +2
                             }
                     }
@@ -144,6 +135,6 @@ class TranslationRepository() {
                     Log.i("ManglingViewModel", "error downloading $language")
                 }
         }
-        _status.value = "Ready"
+        _status.value = "Translate Me!"
     }
 }

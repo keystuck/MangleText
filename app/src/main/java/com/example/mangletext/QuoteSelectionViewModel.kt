@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-//TODO: preload translation models because VERY SLOW otherwise!
 enum class QoTDStatus {LOADING, ERROR, DONE}
 
 class QuoteSelectionViewModel(inputQuote: String?, author: String?, accessedDate: String?, app: Application) : AndroidViewModel(app) {
@@ -20,8 +19,7 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, accessedDate
     private val backupQuote = resources.getString(R.string.backup_quote)
     private var testQoTD = QoTD(backupQuote,
         backupQuote.length,
-        resources.getString(R.string.backup_author),
-//        arrayOf("hello"), "category", "en", "1-1-01", "302423", "323492", "background", "title")
+        resources.getString(R.string.backup_author)
             )
 
     private val _status = MutableLiveData<QoTDStatus>()
@@ -61,7 +59,6 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, accessedDate
             if (inputString != null && author != null &&
                 inputString.isNotEmpty()
             ) {
-                Log.i("QSVM", "use cached data $inputString and $author")
                 _quotation.value = QoTD(inputString, inputString.length, author)
                 _dateForCache.value = ""
             }
@@ -69,23 +66,16 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, accessedDate
                 _quotation.value = testQoTD
             }
             } else {
-                Log.i("QSVM", "get data from network")
 //            _quotation.value = testQoTD
                 viewModelScope.launch {
                     _status.value = QoTDStatus.LOADING
-                    Log.i("QSVM", "in viewModelScope, about to start try")
                     //TODO: add timeout & show status?
                     try {
-                        Log.i("QSVM", "in viewModelScope, about to start network call")
                         var contents = QuoteApi.retrofitService.getQuote().contents
-                        Log.i("QSVM", "got contents")
                         var qoTD = contents.quotes[0]
-                        Log.i("QSVM", "got the quotation!")
                         _quotation.value = qoTD
                         _status.value = QoTDStatus.DONE
-                        Log.i("QuoteSelectionViewModel", "done: ${qoTD.quote}")
                         _dateForCache.value = date
-                        Log.i("QSVM", "changing date ${_dateForCache.value}")
 
                     } catch (e: Exception) {
                         _status.value = QoTDStatus.ERROR

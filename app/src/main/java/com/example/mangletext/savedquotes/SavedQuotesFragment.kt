@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mangletext.databinding.SavedQuotesFragmentBinding
-import com.example.mangletext.mangling.ManglingFragmentDirections
-import com.example.mangletext.mangling.OnSwipeListener
 
 class SavedQuotesFragment : Fragment() {
 
