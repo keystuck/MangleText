@@ -93,38 +93,9 @@
         app:layout_constraintTop_toBottomOf="@id/tv_author_orig"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="@dimen/text_size_medium"
+        android:textSize="16sp"
         android:gravity="center"/>
 
-
-
-
-
-    <TextView
-        android:id="@+id/translate_label_1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/translated_through"
-        app:layout_constraintTop_toBottomOf="@id/btn_tester"
-        android:textSize="@dimen/text_size_medium"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!--TODO: this needs to automatically change size based on incoming text
-    but it's not doing so consistently. instead it's changing text size, which is not desired. -->
-    <TextView
-        android:id="@+id/translated_text_1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/purple_200"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/translate_label_1"
-        android:textSize="@dimen/text_size_medium"
-        android:minHeight="50dp"
-        app:autoSizeTextType="uniform"
-        tools:text="@string/translated_through"
-        android:text="@{viewModel.outputQuote}"
-        android:gravity="center" />
 
     <Button
         android:id="@+id/btn_save"
@@ -132,9 +103,34 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_medium"
         android:text="@string/save_trans"
-        app:layout_constraintTop_toBottomOf="@id/translated_text_1"
+        app:layout_constraintTop_toBottomOf="@id/btn_tester"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+    <TextView
+        android:id="@+id/translated_text_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple_200"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_save"
+        android:textSize="@dimen/text_size_medium"
+        android:minHeight="200dp"
+        tools:text="@string/translated_through"
+        android:text="@{viewModel.outputQuote}"
+        android:gravity="center" />
+
+<ImageView
+    android:id="@+id/attribution"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:srcCompat="@drawable/color_regular"
+    app:layout_constraintTop_toBottomOf="@id/translated_text_1"
+    app:layout_constraintStart_toStartOf="parent"
+    />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
 

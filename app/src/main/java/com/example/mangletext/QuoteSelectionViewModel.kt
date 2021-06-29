@@ -69,7 +69,7 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, accessedDate
 //            _quotation.value = testQoTD
                 viewModelScope.launch {
                     _status.value = QoTDStatus.LOADING
-                    //TODO: add timeout & show status?
+
                     try {
                         var contents = QuoteApi.retrofitService.getQuote().contents
                         var qoTD = contents.quotes[0]

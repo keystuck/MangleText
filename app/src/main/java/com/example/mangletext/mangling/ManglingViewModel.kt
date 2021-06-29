@@ -63,7 +63,6 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
         }
     }
 
-    //TODO: is this helping?
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {

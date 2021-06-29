@@ -9,13 +9,19 @@
     <string name="orig_text_label">Original Text</string>
     <string name="lang_trans">Language pathway used</string>
     <string name="trans_text">Translated text</string>
-    <string name="translate_btn">Translate me</string>
-    <string name="translate_again">Translate Again</string>
-    <string name="translated_through">After translation becomes</string>
+    <string name="translate_btn">Translate with Google</string>
+    <string name="translate_again">Translate with Google</string>
+    <string name="translated_through">Translated by Google</string>
     <string name="translate_instr">To add a translation press the middle button. Each press
     will translate once; please translate multiple times</string>
+
     <string name="save_trans">Save original and translated text</string>
-    <string name="please_wait">Please wait...</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="saved_instr">Click on a row to see (and maybe retranslate!) a previous mangled quotations;
+    swipe right to delete</string>
+
+    <string name="cant_download_models">Unable to download language models; check for internet
+    connection (only need to download once)</string>
 
     <string name="saved_btn">See saved translations</string>
     <string name="retrans_btn">Retranslate in a different order</string>
@@ -31,5 +37,7 @@ But a bit of better butter will make my batter better
 So ‘twas better Betty Botter bought a bit of better butter</string>
     <string name="backup_author">Unknown</string>
 
-    <string name="google_api_key"></string>
+    <string name="download">Downloading…This may take a few minutes the first time you run the program.
+    If no progress after a minute, check internet connection and restart</string>
+
 </resources>

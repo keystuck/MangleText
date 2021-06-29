@@ -38,6 +38,10 @@ class TranslationRepository() {
     val finalTrans: LiveData<String>
         get() = _finalTrans
 
+    private val _langModels = MutableLiveData<Int>()
+    val langModels: LiveData<Int>
+        get() = _langModels
+
 
     private val _status = MutableLiveData<String>("Translate me")
     val status: LiveData<String>
@@ -57,7 +61,7 @@ class TranslationRepository() {
 
 
     fun setTranslation(savedTranslation: String){
-        _status.value = "Translate me"
+        _status.value = "Translate with Google"
         _finalTrans.value = savedTranslation
     }
 
@@ -113,13 +117,13 @@ class TranslationRepository() {
         }
 
     init{
-        _status.value = "Please wait - checking for language models"
+        _langModels.value = 0
+        _status.value = "Downloading..."
         val conditions = DownloadConditions.Builder()
             .requireWifi()
             .build()
         for(language in languageList)
         {
-
             val options = TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
                 .setTargetLanguage(language)
@@ -129,12 +133,14 @@ class TranslationRepository() {
 
             translator.downloadModelIfNeeded(conditions)
                 .addOnSuccessListener {
-                    Log.i("ManglingViewModel", "downloaded or retrieved $language")
+                    _langModels.value = _langModels.value!! + 1
+                    Log.i("Repo", "downloaded or retrieved $language")
                 }
                 .addOnFailureListener {
-                    Log.i("ManglingViewModel", "error downloading $language")
+                    _langModels.value = -6
+                    Log.i("Repo", "error downloading $language")
                 }
         }
-        _status.value = "Translate Me!"
+        _status.value = "Translate with Google"
     }
 }

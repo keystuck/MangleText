@@ -49,6 +49,9 @@ class QuoteSelectionFragment : Fragment() {
                 }
         }
 
+            //TODO: placeholder & handle while loading
+        //also permissions?
+
         binding.lifecycleOwner = this
         val viewModelFactory = QuoteSelectionViewModelFactory(
                 quotation,

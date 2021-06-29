@@ -6,15 +6,19 @@
     app:constraintSetStart="@id/start"
     app:constraintSetEnd="@id/end"
     app:duration="1000" >
-    <OnClick
-        app:targetId="@id/bouncy_ball"
-        app:clickAction="toggle" />
     <KeyFrameSet >
         <KeyAttribute
             app:motionTarget="@+id/bouncy_ball"
             app:framePosition="50"
             android:scaleX="5"
             android:scaleY="5" />
+        <KeyCycle
+            app:motionTarget="@+id/btn_tester"
+            app:framePosition="50"
+            app:wavePeriod="1"
+            app:waveShape="sawtooth"
+            android:rotation="90"
+            app:waveOffset="0" />
     </KeyFrameSet>
 
 </Transition>
