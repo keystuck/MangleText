@@ -136,6 +136,14 @@ class ManglingFragment : Fragment() {
             }
         }
 
+        binding.viewMaster.setOnTouchListener(object: OnSwipeListener(requireActivity()){
+            override fun onSwipeDown(){
+                translate(viewModel)
+                binding.viewMaster.transitionToEnd()
+                binding.viewMaster.transitionToStart()
+            }
+        })
+
 
         binding.btnTester.setOnClickListener{
             translate(viewModel)
