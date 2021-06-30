@@ -11,7 +11,6 @@ import retrofit2.http.GET
 
 private const val BASE_URL = "https://quotes.rest"
 
-//
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()

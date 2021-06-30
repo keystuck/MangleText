@@ -7,7 +7,7 @@ import android.view.View
 import kotlin.math.abs
 
 /* Adapted from
-    Copyright (c) 2019 Nathan Esquenazi
+     Copyright (c) 2019 Nathan Esquenazi
 / https://gist.github.com/nesquena/ed58f34791da00da9751
 */
 open class OnSwipeListener(c: Context): View.OnTouchListener {

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/quoteSelectionFragment">
+    app:startDestination="@id/splashFragment">
 
     <activity
         android:id="@+id/mainActivity"
@@ -54,5 +54,14 @@
             android:id="@+id/action_savedQuotesFragment_to_manglingFragment"
             app:destination="@id/manglingFragment"
             app:popUpTo="@id/savedQuotesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.mangletext.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_quoteSelectionFragment"
+            app:destination="@id/quoteSelectionFragment" />
     </fragment>
 </navigation>
