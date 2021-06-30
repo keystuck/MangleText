@@ -21,7 +21,10 @@
     swipe right to delete</string>
 
     <string name="cant_download_models">Unable to download language models; check for internet
-    connection (only need to download once)</string>
+    connection (only need to download first time you use app) and permission and restart app</string>
+
+    <string name="no_internet_warning">App doesn\'t have permission to access Internet;
+    will use cached or backup quote</string>
 
     <string name="saved_btn">See saved translations</string>
     <string name="retrans_btn">Retranslate in a different order</string>

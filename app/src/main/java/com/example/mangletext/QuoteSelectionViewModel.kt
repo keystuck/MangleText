@@ -1,9 +1,13 @@
 package com.example.mangletext
 
+import android.Manifest
 import android.app.Application
+import android.content.pm.PackageManager
 import android.provider.Settings.Global.getString
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.example.mangletext.network.QoTD
 import com.example.mangletext.network.QuoteApi
@@ -61,11 +65,14 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, accessedDate
             ) {
                 _quotation.value = QoTD(inputString, inputString.length, author)
                 _dateForCache.value = ""
+                _status.value = QoTDStatus.DONE
             }
             else {
                 _quotation.value = testQoTD
+                _status.value = QoTDStatus.DONE
             }
-            } else {
+
+        } else {
 //            _quotation.value = testQoTD
                 viewModelScope.launch {
                     _status.value = QoTDStatus.LOADING
@@ -78,7 +85,7 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, accessedDate
                         _dateForCache.value = date
 
                     } catch (e: Exception) {
-                        _status.value = QoTDStatus.ERROR
+
                         _quotation.value = testQoTD
                         Toast.makeText(
                             getApplication(),
@@ -87,13 +94,12 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, accessedDate
                         ).show()
                         Log.i("QuoteSelectionViewModel", "${e.message}")
                         _dateForCache.value = ""
+                        _status.value = QoTDStatus.DONE
                     }
                 }
 
             }
 
     }
-
-
 }
 

@@ -100,7 +100,7 @@ class TranslationRepository() {
                                 toTranslator2.translate(translatedText)
                                     .addOnSuccessListener { translated2 ->
                                         _finalTrans.value = translated2
-                                        _status.value = "Translate Again"
+                                        _status.value = "Translate with Google"
                                     }
                                 transCounter++
                             }
@@ -134,7 +134,6 @@ class TranslationRepository() {
             translator.downloadModelIfNeeded(conditions)
                 .addOnSuccessListener {
                     _langModels.value = _langModels.value!! + 1
-                    Log.i("Repo", "downloaded or retrieved $language")
                 }
                 .addOnFailureListener {
                     _langModels.value = -6

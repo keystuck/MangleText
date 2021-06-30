@@ -34,12 +34,22 @@
             app:layout_constraintStart_toStartOf="parent"
             />
 
-
+            <ImageView
+                android:id="@+id/loading_image"
+                android:layout_width="100dp"
+                android:layout_height="200dp"
+                app:srcCompat="@drawable/ic_clock"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_qotd_label2"
+                android:elevation="2dp"
+           />
             <TextView
                 android:id="@+id/tv_qotd_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="200dp"
+                android:elevation="0dp"
                 android:background="@color/purple_200"
                 android:textColor="@color/white"
                 android:text="@{viewModel.quotation.quote}"
