@@ -14,6 +14,7 @@ data class QATObject(
     @ColumnInfo(name = "author")val author: String,
     @ColumnInfo(name = "translation")val translation: String,
     @ColumnInfo(name = "date")val date: String,
+    @ColumnInfo(name = "image")val image: String,
     @PrimaryKey @ColumnInfo(name = "qat_id") val id: String = UUID.randomUUID().toString(),
 
 ) : Parcelable

@@ -52,10 +52,10 @@ class QuoteSelectionViewModel(inputQuote: String?, author: String?, accessedDate
         val simpleDateFormat = SimpleDateFormat(pattern)
 
         //real date
-        val date: String = simpleDateFormat.format(Date())
+//        val date: String = simpleDateFormat.format(Date())
 
         //test date to force mismatch
-//      val date = "2020-03-02"
+      val date = "2020-03-02"
 
         //we have current values - no network needed
         if (accessedDate.equals(date)) {

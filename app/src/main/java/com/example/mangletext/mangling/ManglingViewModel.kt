@@ -87,7 +87,7 @@ class ManglingViewModel(private val repo: TranslationRepository, inputQuote: Str
         } else {
             outQuote = outputQuote.value!!
         }
-        val quoteToSave = QATObject(_quotation.value!!, _author.value!!, outQuote, date)
+        val quoteToSave = QATObject(_quotation.value!!, _author.value!!, outQuote, date, "")
 
         return quoteToSave
     }
