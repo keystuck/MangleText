@@ -27,12 +27,12 @@ class SplashViewModel: ViewModel() {
     }
 
 
-    //TODO: remove access key
+   
     private fun getPhoto(){
         viewModelScope.launch {
             _status.value = PhotoStatus.LOADING
             try {
-                var photoURLS = PhotoApi.retrofitService.getPhoto("GygT99X_hc_qH4CwknIeF0JSv0Jor61qBgpIJOI3PmY","-McNLBYjS8w").urls
+                var photoURLS = PhotoApi.retrofitService.getPhoto("","-McNLBYjS8w").urls
                 var photoInfo = photoURLS.small
                 Log.i("SplashViewModel", "url for photo: $photoInfo")
                 _urlToUse.value = photoInfo
